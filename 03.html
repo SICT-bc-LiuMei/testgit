@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>changrskin</title>
+	</head>
+	<style>
+		.skin{
+			display: inline-block;
+			color: darkblue;
+			float: right;
+			margin-right: 20px;
+			margin-top: 10px;
+			cursor: default;
+		}
+		body{
+			background: lightblue;
+		}
+	</style>
+	<body>
+		<span class="skin" id="skin">[换肤]</span>
+		<script>
+			// 给 document.body换肤 
+			var EventUtil = {
+				addHandler: function(element, type , handler){
+					if(element.addEventListener){
+						element.addEventListener(type, handler, false);
+					}else if(element.attachEvent){
+						element.attachEvent("on"+type, handler);
+					}else{
+						element["on"+type] = handler;
+					}
+				}
+			};
+			var color = 0;
+			var skinObj = document.getElementById("skin");
+			EventUtil.addHandler(skinObj, 'click', function(){
+				if(color == 0){
+					document.body.style.background = "lightsalmon";
+					color = 1;
+				}else if(color == 1){
+					document.body.style.background = "lightseagreen";
+					color = -1;
+				}else if(color == -1){
+					document.body.style.background = "lightblue";
+					color = 0;
+				}
+				
+			});
+		</script>
+	</body>
+</html>
