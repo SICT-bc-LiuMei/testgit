@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>02.html</title>
+	</head>
+	<body>
+		<div id="myDiv"></div>
+		<script>
+			//     一个table 包括学号 ，姓名， 成绩， 排名， （乱序排列）， 当点击成绩时，
+//      表格按成绩由低到高排列，再点击一下成绩时，表格按照成绩 由高到低排列
+
+         // 定义学生信息
+      var stuInfor = [
+       		{id: 2, name: "mary", grade: 85, rank: 5},
+      		{id: 5, name: "lisa", grade: 90, rank: 3},
+       		{id: 3, name: "mike", grade: 91, rank: 2},
+      		{id: 1, name: "joe", grade: 88, rank:4},
+     		{id: 4, name: "sary", grade:99, rank:1}
+         ];
+         
+     var EventUtil = {
+
+     	addHandler: function(element, type, handler) { //添加事件
+     		if(element.addEventListener) {
+     			element.addEventListener(type, handler, false); //使用DOM2级方法添加事件
+     		} else if(element.attachEvent) { //使用IE方法添加事件
+     			element.attachEvent("on" + type, handler);
+     		} else {
+     			element["on" + type] = handler; //使用DOM0级方法添加事件
+     		}
+     	},
+
+     }
+     // 创建表格 ， 表格头
+       var tab = document.createElement('table');
+       tab.setAttribute('id','myTable');
+       var r = document.createElement('tr');
+       var td0_txt = document.createTextNode('ID');
+       var td1_txt = document.createTextNode('姓名');
+       var td2_txt = document.createTextNode('成绩');
+       var td3_txt = document.createTextNode('排名');
+       var td0 = document.createElement('td');
+       var td1 = document.createElement('td');
+       var td2 = document.createElement('td');
+       td2.setAttribute('id','myGrade');
+       var td3 = document.createElement('td');
+       td0.appendChild(td0_txt);
+       td1.appendChild(td1_txt);
+       td2.appendChild(td2_txt);
+       td3.appendChild(td3_txt);
+       r.appendChild(td0);
+       r.appendChild(td1);
+       r.appendChild(td2);
+       r.appendChild(td3);
+       tab.appendChild(r);
+       
+       // 表格内容初始化
+       function fillTable(stuinfor){
+       		for(var i = 0 ; i < stuInfor.length; i++){
+       	    var r = document.createElement('tr');
+       	    var td0_txt = document.createTextNode(stuInfor[i].id);
+       	    var td1_txt = document.createTextNode(stuInfor[i].name);
+       	    var td2_txt = document.createTextNode(stuInfor[i].grade);
+       	    var td3_txt = document.createTextNode(stuInfor[i].rank);
+       	    var td0 = document.createElement('td');
+       	    var td1 = document.createElement('td');
+       	    var td2 = document.createElement('td');
+       	    var td3 = document.createElement('td');
+       	    td0.appendChild(td0_txt);
+       	    td1.appendChild(td1_txt);
+       	    td2.appendChild(td2_txt);
+       	    td3.appendChild(td3_txt);
+       	    r.appendChild(td0);
+       	    r.appendChild(td1);
+       	    r.appendChild(td2);
+       	    r.appendChild(td3);
+       	    tab.appendChild(r);
+           }
+       	 document.getElementById("myDiv").appendChild(tab);
+       	 return tab;
+       }
+       // 表格初始化
+       var tab0 = fillTable(stuInfor);
+      
+       
+        // 当鼠标移动到 table时 为箭头样式， 默认情况为文本样式样式
+       document.getElementById("myTable").style.cursor = "default";
+       
+        
+       // 成绩从低到高
+       function lowToHigh(o1 , o2){
+       		var value1 = o1.grade;
+       		var value2 = o2.grade;
+       		return value1-value2;
+       }
+       //成绩从高到低
+       function highToLow(o1, o2 ){
+       		var value1 = o1.grade;
+       		var value2 = o2.grade;
+       		return -(value1-value2);
+       }
+    
+    document.getElementById("myGrade").style.color = 'red';
+    var staus = 0;
+    var target = document.getElementById("myGrade");
+	EventUtil.addHandler(target, 'click', function(){
+		    var len = stuInfor.length;
+       	    for(var i = 0; i < len ; i++){
+       	    	document.getElementById("myTable").deleteRow(1);
+       	    }
+		
+			if(staus == 1){
+         	 	stuInfor.sort(highToLow);
+         	    var tab1 = fillTable(stuInfor);
+         	    staus = 0;
+         	 }else if(staus == 0){
+         	 	stuInfor.sort(lowToHigh);
+         	    var tab1 = fillTable(stuInfor);
+         	    staus = 1;
+         	 }
+         	    
+    });
+	
+     // 获取当前table 的信息，并用数组存储
+    var curTab = document.getElementById("myTable");
+	//console.log(curTab.rows.length); 
+	var curTab_len = curTab.rows.length;
+	var result = [];
+	for( var i = 1; i<curTab_len; i++){
+		var id = curTab.rows[i].cells[0].innerHTML;
+		var name = curTab.rows[i].cells[1].innerHTML;
+		var grade = curTab.rows[i].cells[2].innerHTML;
+		var rank = curTab.rows[i].cells[3].innerHTML;
+		var infor = {id: id, name: name, grade: grade, rank: rank};
+		result.push(infor);
+	}
+	for(p in result){
+		console.log("ID: "+result[p].id + "姓名："+ result[p].name+ "成绩： "+result[p].grade+ " 排名："+result[p].rank);
+	}
+   
+
+   
+		</script>
+	</body>
+</html>
