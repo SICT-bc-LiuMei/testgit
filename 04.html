@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>transportParams</title>
+	</head>
+	<body>
+		<style type="text/css">
+			#divTab{
+				/*background: red;*/
+				width: 180px;
+				margin-left: 300px;
+			}
+			.infor{
+				background: lightgoldenrodyellow;
+				margin-left: 8px;
+			}
+			#td3{
+				display: block;
+				margin-left: 50px;
+			}
+		</style>
+		<div id="divTab">
+		  <table class="infor" id="infor">
+			  <tr><td><input type="text" placeholder="姓名" /></td></tr>
+			  <tr><td><input type="text" placeholder="年龄"/></td></tr>
+			  <tr><td id="td3"><button type="button" class="submit" id="submit">传参</button></td></tr>
+		  </table>
+		</div>  
+		<script>
+			// a 页面 向 a 页面 传参    使用js 实现
+			var EventUtil = {
+				addHandler: function(element, type , handler){
+					if(element.addEventListener){
+						element.addEventListener(type, handler,false);
+					}else if(element.attachEvent){
+						element.attachEvent("on"+type, handler);
+					}else{
+						element['on'+type] = handler ;
+					}
+				}
+			};
+			var subObj = document.getElementById("submit");
+			EventUtil.addHandler(subObj, 'click', function(){
+				var textObjs = document.getElementsByTagName('input');
+				var text1 = textObjs[0].value;
+				var text2 = textObjs[1].value;
+				alert("姓名 ：" + text1 + " ; 年龄 : "+ text2);
+			});
+		</script>
+	</body>
+</html>
